@@ -1,0 +1,28 @@
+{
+	"autosplitter_title" : "Auto Splitter",
+	"autosplitter_desc" : "Auto Splitter",
+	
+	"autosplitter_enabled" : "Enabled",
+	"autosplitter_enabled_desc" : "Enables autosplitting",
+	"autosplitter_send_igt" : "Report Game Time",
+	"autosplitter_send_igt_desc" : "When splitting, sends the in-game heist time as game time. You need to configure LiveSplit to show game time",
+	"autosplitter_igt_on_restarts" : "Update on restarts",
+	"autosplitter_igt_on_restarts_desc" : "Update the game time on restarts and fails",
+	
+	"autosplitter_action_heist_completion" : "On heist completion",
+	"autosplitter_action_heist_completion_desc" : "Action on succesfull heist completion",
+	"autosplitter_action_menu" : "On main menu",
+	"autosplitter_action_menu_desc" : "Action when entering main menu state, i.e. the state before a heist is startet",
+	"autosplitter_action_heist_start" : "On heist start",
+	"autosplitter_action_heist_start_desc" : "Action when starting the heist",
+	"autosplitter_action_waiting_for_players" : "On waiting menu",
+	"autosplitter_action_waiting_for_players_desc" : "Action when entering the waiting menu, where you can select you loadout and preplan",
+	
+	"autosplitter_btn_split" : "Split Test",
+	"autosplitter_btn_split_desc" : "Split Test",
+	
+	"autosplitter_none" : "None",
+	"autosplitter_start_or_split" : "Start/Split",
+	"autosplitter_split" : "Split",
+	"autosplitter_start" : "Start",
+}

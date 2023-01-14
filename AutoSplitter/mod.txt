@@ -1,0 +1,22 @@
+{
+	"name" : "Livesplit Autosplitter",
+	"description" : "A Livesplit autosplitter that can automatically split after heists and report the in-game heist clock as game time",
+	"author" : "Dyrax",
+	"version" : "1.0",
+	"blt_version" : 2,
+	"color" : "0.2 0.4 0.2",
+	"updates": [{
+		"identifier": "dyrax_autosplitter",
+		"host": {
+			"meta": "https://github.com/dyrax/payday2-autosplitter/releases/latest/download/meta.json"
+		}
+	}],
+	"hooks" : [
+		{ "hook_id" : "lib/managers/menumanager", "script_path" : "autosplitter.lua" },
+		{ "hook_id" : "lib/states/victorystate", "script_path" : "autosplitter.lua" },
+		{ "hook_id" : "lib/states/gameoverstate", "script_path" : "autosplitter.lua" },
+		{ "hook_id" : "lib/states/menumainstate", "script_path" : "autosplitter.lua" },
+		{ "hook_id" : "lib/states/ingamewaitingforplayers", "script_path" : "autosplitter.lua" },
+		{ "hook_id" : "lib/managers/gameplaycentralmanager", "script_path" : "autosplitter.lua" },
+	]
+}

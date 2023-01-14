@@ -1,0 +1,107 @@
+{
+	"menu_id" : "autosplitter_menu",
+	"parent_menu_id" : "blt_options",
+	"title" : "autosplitter_title",
+	"description" : "autosplitter_desc",
+	"items" : [
+		{
+			"type" : "toggle",
+			"id" : "autosplitter_enabled",
+			"title" : "autosplitter_enabled",
+			"description" : "autosplitter_enabled_desc",
+			"callback" : "callback_autosplitter_enabled",
+			"value" : "enabled",
+		},
+		{
+			"type" : "divider",
+			"size" : 12,
+		},
+		{
+			"type" : "toggle",
+			"id" : "autosplitter_send_igt",
+			"title" : "autosplitter_send_igt",
+			"description" : "autosplitter_send_igt_desc",
+			"callback" : "callback_autosplitter_send_igt",
+			"value" : "sendIGT",
+		},
+		{
+			"type" : "toggle",
+			"id" : "autosplitter_igt_on_restarts",
+			"title" : "autosplitter_igt_on_restarts",
+			"description" : "autosplitter_igt_on_restarts_desc",
+			"callback" : "callback_autosplitter_igt_on_restarts",
+			"value" : "igt_on_restarts",
+		},
+		{
+			"type" : "divider",
+			"size" : 12,
+		},
+		{
+			"type" : "multiple_choice",
+			"id" : "autosplitter_action_heist_completion",
+			"title" : "autosplitter_action_heist_completion",
+			"description" : "autosplitter_action_heist_completion_desc",
+			"callback" : "callback_autosplitter_action_heist_completion",
+			"items" : [
+				"autosplitter_none",
+				"autosplitter_start_or_split",
+				"autosplitter_split",
+				"autosplitter_start"
+			],
+			"value" : "action_heist_completion",
+		},
+		{
+			"type" : "multiple_choice",
+			"id" : "autosplitter_action_menu",
+			"title" : "autosplitter_action_menu",
+			"description" : "autosplitter_action_menu_desc",
+			"callback" : "callback_autosplitter_action_menu",
+			"items" : [
+				"autosplitter_none",
+				"autosplitter_start_or_split",
+				"autosplitter_split",
+				"autosplitter_start"
+			],
+			"value" : "action_menu",
+		},
+		{
+			"type" : "multiple_choice",
+			"id" : "autosplitter_action_heist_start",
+			"title" : "autosplitter_action_heist_start",
+			"description" : "autosplitter_action_heist_start_desc",
+			"callback" : "callback_autosplitter_action_heist_start",
+			"items" : [
+				"autosplitter_none",
+				"autosplitter_start_or_split",
+				"autosplitter_split",
+				"autosplitter_start"
+			],
+			"value" : "action_heist_start",
+		},
+		{
+			"type" : "multiple_choice",
+			"id" : "autosplitter_action_waiting_for_players",
+			"title" : "autosplitter_action_waiting_for_players",
+			"description" : "autosplitter_action_waiting_for_players_desc",
+			"callback" : "callback_autosplitter_action_waiting_for_players",
+			"items" : [
+				"autosplitter_none",
+				"autosplitter_start_or_split",
+				"autosplitter_split",
+				"autosplitter_start"
+			],
+			"value" : "action_waiting_for_players",
+		},
+		{
+			"type" : "divider",
+			"size" : 12,
+		},
+		{
+			"type" : "button",
+			"id" : "autosplitter_btn_split",
+			"title" : "autosplitter_btn_split",
+			"description" : "autosplitter_btn_split_desc",
+			"callback" : "callback_autosplitter_btn_split"
+		}
+	]
+}
