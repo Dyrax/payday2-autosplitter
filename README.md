@@ -15,5 +15,5 @@ This is a Payday 2 mod
 
 ## Usage
 
-Simply start the game and Livesplit. The mod connects automatically to Livesplit when needed.
-When to start and split can be configured via the options menu.
+Simply start the game and Livesplit. The mod connects automatically to Livesplit.
+Configuration is done via the in-game mod options menu.
