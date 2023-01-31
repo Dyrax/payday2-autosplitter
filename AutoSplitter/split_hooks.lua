@@ -57,8 +57,8 @@ if RequiredScript == "lib/states/ingamewaitingforplayers" then
 end
 
 -- Update time on restarts
-if RequiredScript == "lib/managers/gameplaycentralmanager" then
-	Hooks:PreHook(GamePlayCentralManager, "restart_the_game" , "autosplitter_restart_the_game" , function(gsm)
+if RequiredScript == "lib/managers/jobmanager" then
+	Hooks:PreHook(JobManager, "_on_retry_job_stage" , "autosplitter_on_retry_job_stage" , function(gsm)
 		pcall(function(state)
 			if AutoSplitter._data.enabled and AutoSplitter._data.igt_on_restarts and Utils:IsInHeist() then
 				local igt = tostring(math.round(managers.statistics:get_session_time_seconds()))
