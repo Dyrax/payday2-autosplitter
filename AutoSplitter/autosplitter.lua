@@ -42,6 +42,7 @@ function AutoSplitter:LoadSettings()
 	self:setDefaultValue("enabled", true)
 	self:setDefaultValue("sendIGT", true)
 	self:setDefaultValue("igt_on_restarts", true)
+	self:setDefaultValue("round_igt", true)
 	self:setDefaultValue("action_heist_completion", 3)
 	self:setDefaultValue("action_menu", 4)
 	self:setDefaultValue("action_heist_start", 1)
@@ -103,10 +104,18 @@ function AutoSplitter:DoActionAndUpdateTime(igt, action)
 		if self._data.sendIGT then
 			-- set game time to zero when starting
 			if (action == self._actions.Start or action == self._actions.StartOrSplit) and currentIndex < 0 then
-				self:SendIGT(pipe, "0")
+				self:SendIGT(pipe, 0)
 			end
 		end
 		
 		pipe:close()
 	end
+end
+
+function AutoSplitter:GetHeistTime()
+	local time = managers.statistics:get_session_time_seconds()
+	if self._data.round_igt then
+		time = math.round(time)
+	end
+	return time
 end

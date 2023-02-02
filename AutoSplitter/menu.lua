@@ -17,6 +17,10 @@ if RequiredScript == "lib/managers/menumanager" then
 			AutoSplitter._data.igt_on_restarts = (item:value() == "on" and true or false)
 			AutoSplitter:SaveSettings()
 		end
+		MenuCallbackHandler.callback_autosplitter_round_igt = function(self, item)
+			AutoSplitter._data.round_igt = (item:value() == "on" and true or false)
+			AutoSplitter:SaveSettings()
+		end
 		
 		MenuCallbackHandler.callback_autosplitter_action_heist_completion = function(self, item)
 			AutoSplitter._data.action_heist_completion = item:value()

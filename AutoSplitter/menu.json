@@ -33,6 +33,14 @@
 			"value" : "igt_on_restarts",
 		},
 		{
+			"type" : "toggle",
+			"id" : "autosplitter_round_igt",
+			"title" : "autosplitter_round_igt",
+			"description" : "autosplitter_round_igt_desc",
+			"callback" : "callback_autosplitter_round_igt",
+			"value" : "round_igt",
+		},
+		{
 			"type" : "divider",
 			"size" : 12,
 		},

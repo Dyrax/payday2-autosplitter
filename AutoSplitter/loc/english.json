@@ -8,6 +8,8 @@
 	"autosplitter_send_igt_desc" : "When splitting, sends the in-game heist time as game time. You need to configure LiveSplit to show game time",
 	"autosplitter_igt_on_restarts" : "Update on restarts",
 	"autosplitter_igt_on_restarts_desc" : "Update the game time on restarts and fails",
+	"autosplitter_round_igt" : "Round Game Time",
+	"autosplitter_round_igt_desc" : "Round Game Time like shown in Crew Stats",
 	
 	"autosplitter_action_heist_completion" : "On heist completion",
 	"autosplitter_action_heist_completion_desc" : "Action on succesfull heist completion",

@@ -4,7 +4,7 @@ if RequiredScript == "lib/states/victorystate" then
 		pcall(function(state)
 			if AutoSplitter._data.enabled then
 				local isLastDay = (not managers.job:current_job_chain_data()) or #(managers.job:current_job_chain_data()) == managers.job:current_stage()
-				local igt = tostring(math.round(managers.statistics:get_session_time_seconds()))
+				local igt = AutoSplitter:GetHeistTime()
 				local action = nil
 				
 				-- only split on job finish not day, but otherwise still update IGT 
@@ -22,7 +22,7 @@ if RequiredScript == "lib/states/gameoverstate" then
 	Hooks:PreHook(GameOverState, "at_enter" , "autosplitter_gameoverstate_at_enter" , function(state)
 		pcall(function(state)
 			if AutoSplitter._data.enabled and AutoSplitter._data.igt_on_restarts then
-				local igt = tostring(math.round(managers.statistics:get_session_time_seconds()))
+				local igt = AutoSplitter:GetHeistTime()
 				AutoSplitter:DoActionAndUpdateTime(igt, nil)
 			end
 		end, state)
@@ -61,7 +61,7 @@ if RequiredScript == "lib/managers/jobmanager" then
 	Hooks:PreHook(JobManager, "_on_retry_job_stage" , "autosplitter_on_retry_job_stage" , function(gsm)
 		pcall(function(state)
 			if AutoSplitter._data.enabled and AutoSplitter._data.igt_on_restarts and Utils:IsInHeist() then
-				local igt = tostring(math.round(managers.statistics:get_session_time_seconds()))
+				local igt = AutoSplitter:GetHeistTime()
 				AutoSplitter:DoActionAndUpdateTime(igt, nil)
 			end
 		end, state)
