@@ -4,8 +4,14 @@
 	
 	"autosplitter_enabled" : "Enabled",
 	"autosplitter_enabled_desc" : "Enables autosplitting",
-	"autosplitter_send_igt" : "Report Game Time",
-	"autosplitter_send_igt_desc" : "When splitting, sends the in-game heist time as game time. You need to configure LiveSplit to show game time",
+
+	"autosplitter_game_time_mode" : "Game Time Mode",
+	"autosplitter_game_time_mode_desc" : "In-Game Heist Time: Time shown in Crew Stats (Includes Slowmotion), Real Time Heist Only: No loads, menuing, slowmotion, Load Removed Time: No loads but includes menuing time (buying, skilling...)",
+	"autosplitter_game_time_disabled" : "Disabled",
+	"autosplitter_game_time_heist_time" : "In-Game Heist Time",
+	"autosplitter_game_time_real_heist_time" : "Real Time Heist Only",
+	"autosplitter_game_time_load_removed" : "Load Removed Time",
+
 	"autosplitter_igt_on_restarts" : "Update on restarts",
 	"autosplitter_igt_on_restarts_desc" : "Update the game time on restarts and fails",
 	"autosplitter_round_igt" : "Round Game Time",

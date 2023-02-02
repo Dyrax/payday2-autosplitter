@@ -9,8 +9,8 @@ if RequiredScript == "lib/managers/menumanager" then
 			AutoSplitter._data.enabled = (item:value() == "on" and true or false)
 			AutoSplitter:SaveSettings()
 		end
-		MenuCallbackHandler.callback_autosplitter_send_igt = function(self, item)
-			AutoSplitter._data.sendIGT = (item:value() == "on" and true or false)
+		MenuCallbackHandler.callback_autosplitter_game_time_mode = function(self, item)
+			AutoSplitter._data.game_time_mode = item:value()
 			AutoSplitter:SaveSettings()
 		end
 		MenuCallbackHandler.callback_autosplitter_igt_on_restarts = function(self, item)
@@ -40,7 +40,7 @@ if RequiredScript == "lib/managers/menumanager" then
 		end
 
 		MenuCallbackHandler.callback_autosplitter_btn_split = function(self, item)
-			AutoSplitter:DoActionAndUpdateTime(nil, AutoSplitter._actions.StartOrSplit)
+			AutoSplitter:DoActionAndUpdateTime(nil, AutoSplitter._actions.StartOrSplit, nil, nil)
 		end
 
 		AutoSplitter:LoadSettings()

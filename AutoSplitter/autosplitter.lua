@@ -14,6 +14,19 @@ if not _G.AutoSplitter then
 		[AutoSplitter._actions.Split] = 'split',
 		[AutoSplitter._actions.Start] = 'starttimer'
 	}
+	AutoSplitter._game_time_modes = {
+		Disabled = 1,
+		HeistTime = 2,
+		RealTimeHeistOnly = 3,
+		LoadRemovedTime = 4
+	}
+	AutoSplitter.PAUSE = 1
+	AutoSplitter.UNPAUSE = 2
+	AutoSplitter.WEAK_PAUSE = 3
+	-- weak unpause only undo weak pause, used for RealTimeHeistOnly when opening the menu in a heist
+	AutoSplitter.WEAK_UNPAUSE = 4
+	AutoSplitter._isPaused = false
+	AutoSplitter._isWeakPaused = false
 end
 
 function AutoSplitter:SaveSettings()
@@ -40,13 +53,13 @@ function AutoSplitter:LoadSettings()
 	
 	-- default values
 	self:setDefaultValue("enabled", true)
-	self:setDefaultValue("sendIGT", true)
+	self:setDefaultValue("game_time_mode", self._game_time_modes.HeistTime)
 	self:setDefaultValue("igt_on_restarts", true)
 	self:setDefaultValue("round_igt", true)
-	self:setDefaultValue("action_heist_completion", 3)
-	self:setDefaultValue("action_menu", 4)
-	self:setDefaultValue("action_heist_start", 1)
-	self:setDefaultValue("action_waiting_for_players", 1)
+	self:setDefaultValue("action_heist_completion", self._actions.Split)
+	self:setDefaultValue("action_menu", self._actions.Start)
+	self:setDefaultValue("action_heist_start", self._actions.None)
+	self:setDefaultValue("action_waiting_for_players", self._actions.None)
 end
 
 function AutoSplitter:GetPipe()
@@ -76,7 +89,7 @@ function AutoSplitter:GetCmdTimeResult(pipe)
 end
 
 function AutoSplitter:SendIGT(pipe, igt)
-	if self._data.sendIGT and igt and pipe then
+	if igt and pipe then
 		-- might return realtime, no way to check unfortunately
 		self:SendCmd(pipe, "getcurrentgametime") 
 		prev_igt = self:GetCmdTimeResult(pipe)
@@ -86,28 +99,51 @@ function AutoSplitter:SendIGT(pipe, igt)
 	end
 end
 
-function AutoSplitter:DoActionAndUpdateTime(igt, action)
+function AutoSplitter:DoActionAndUpdateTime(igt, action, pauseHeistOnly, pauseLoadRemoving)
 	local pipe = self:GetPipe()
 	if pipe then
 		self:SendCmd(pipe, "getsplitindex")
 		local currentIndex = tonumber(self:GetCmdResult(pipe))
+		local isStart = (action == self._actions.Start or action == self._actions.StartOrSplit) and currentIndex < 0
 
-		if self._data.sendIGT then
+		if self:UsesHeistTime() then
 			self:SendCmd(pipe, "alwayspausegametime")
 			if currentIndex >= 0 and igt then
 				self:SendIGT(pipe, igt)
 			end
 		end
+
+		local pauseAction = nil
+		if self:UsesRealTimeHeistOnly() then
+			pauseAction = pauseHeistOnly or (isStart and self.PAUSE) -- default paused at start
+		elseif self:UsesLoadRemoving() then
+			pauseAction = pauseLoadRemoving or (isStart and self.UNPAUSE) -- default unpaused at start
+		end
+		if pauseAction == self.PAUSE then
+			self:SendCmd(pipe, "pausegametime")
+			self._isPaused = true
+			self._isWeakPaused = false
+		elseif pauseAction == self.UNPAUSE then
+			self:SendCmd(pipe, "unpausegametime")
+			self._isPaused = false
+			self._isWeakPaused = false
+		elseif pauseAction == self.WEAK_PAUSE then
+			self:SendCmd(pipe, "pausegametime")
+			self._isWeakPaused = self._isWeakPaused or not self._isPaused
+			self._isPaused = true
+		elseif pauseAction == self.WEAK_UNPAUSE and self._isWeakPaused then
+			self:SendCmd(pipe, "unpausegametime")
+			self._isPaused = false
+			self._isWeakPaused = false
+		end
+
 		if action and self._action_cmds[action] then
 			self:SendCmd(pipe, self._action_cmds[action])
 		end
-		if self._data.sendIGT then
+		if isStart and self:UsesHeistTime() then
 			-- set game time to zero when starting
-			if (action == self._actions.Start or action == self._actions.StartOrSplit) and currentIndex < 0 then
-				self:SendIGT(pipe, 0)
-			end
+			self:SendIGT(pipe, 0)
 		end
-		
 		pipe:close()
 	end
 end
@@ -118,4 +154,16 @@ function AutoSplitter:GetHeistTime()
 		time = math.round(time)
 	end
 	return time
+end
+
+function AutoSplitter:UsesHeistTime()
+	return self._data.game_time_mode == self._game_time_modes.HeistTime
+end
+
+function AutoSplitter:UsesRealTimeHeistOnly()
+	return self._data.game_time_mode == self._game_time_modes.RealTimeHeistOnly
+end
+
+function AutoSplitter:UsesLoadRemoving()
+	return self._data.game_time_mode == self._game_time_modes.LoadRemovedTime
 end

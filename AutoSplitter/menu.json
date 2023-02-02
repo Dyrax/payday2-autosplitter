@@ -17,12 +17,18 @@
 			"size" : 12,
 		},
 		{
-			"type" : "toggle",
-			"id" : "autosplitter_send_igt",
-			"title" : "autosplitter_send_igt",
-			"description" : "autosplitter_send_igt_desc",
-			"callback" : "callback_autosplitter_send_igt",
-			"value" : "sendIGT",
+			"type" : "multiple_choice",
+			"id" : "autosplitter_game_time_mode",
+			"title" : "autosplitter_game_time_mode",
+			"description" : "autosplitter_game_time_mode_desc",
+			"callback" : "callback_autosplitter_game_time_mode",
+			"items" : [
+				"autosplitter_game_time_disabled",
+				"autosplitter_game_time_heist_time",
+				"autosplitter_game_time_real_heist_time",
+				"autosplitter_game_time_load_removed"
+			],
+			"value" : "game_time_mode",
 		},
 		{
 			"type" : "toggle",
