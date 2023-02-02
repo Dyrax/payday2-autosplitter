@@ -2,7 +2,7 @@
 	"name" : "Livesplit Autosplitter",
 	"description" : "A Livesplit autosplitter that can automatically split after heists and report the in-game heist clock as game time",
 	"author" : "Dyrax",
-	"version" : "1.0.1",
+	"version" : "1.1.0",
 	"blt_version" : 2,
 	"color" : "0.2 0.4 0.2",
 	"updates": [{
