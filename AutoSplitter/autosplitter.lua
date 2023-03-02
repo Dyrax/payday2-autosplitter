@@ -53,7 +53,7 @@ function AutoSplitter:LoadSettings()
 	
 	-- default values
 	self:setDefaultValue("enabled", true)
-	self:setDefaultValue("game_time_mode", self._game_time_modes.HeistTime)
+	self:setDefaultValue("game_time_mode", self._game_time_modes.RealTimeHeistOnly)
 	self:setDefaultValue("igt_on_restarts", true)
 	self:setDefaultValue("round_igt", true)
 	self:setDefaultValue("action_heist_completion", self._actions.Split)
