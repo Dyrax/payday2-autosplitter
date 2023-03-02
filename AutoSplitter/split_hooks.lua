@@ -2,7 +2,7 @@ local Pre = true
 local Post = false
 function AddHook(isPre, objName, funcName, hookFunc)
 	addHook = pre and Hooks.PreHook or Hooks.PostHook
-	addHook(Hooks, _G[objName], funcName , "autosplitter_" .. objName .. funcName , function()
+	addHook(Hooks, _G[objName], funcName , "autosplitter_" .. objName .. funcName, function()
 		pcall(function()
 			if AutoSplitter._data.enabled then
 				hookFunc()

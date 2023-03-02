@@ -102,9 +102,16 @@ end
 function AutoSplitter:DoActionAndUpdateTime(igt, action, pauseHeistOnly, pauseLoadRemoving)
 	local pipe = self:GetPipe()
 	if pipe then
+		pipe:seek("end") -- make sure no leftover chars are in the pipe
+
 		self:SendCmd(pipe, "getsplitindex")
-		local currentIndex = tonumber(self:GetCmdResult(pipe))
-		local isStart = (action == self._actions.Start or action == self._actions.StartOrSplit) and currentIndex < 0
+		local isStartAction = action == self._actions.Start or action == self._actions.StartOrSplit
+		local currentIndex = nil
+		if isStartAction or self:UsesHeistTime() then
+			-- only request current index if necessary
+			currentIndex = tonumber(self:GetCmdResult(pipe))
+		end
+		local isStart = isStartAction and currentIndex < 0
 
 		if self:UsesHeistTime() then
 			self:SendCmd(pipe, "alwayspausegametime")
