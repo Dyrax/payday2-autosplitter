@@ -1,6 +1,6 @@
 if RequiredScript == "lib/managers/menumanager" then
 	Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_AutoSplitter", function( loc )
-		loc:load_localization_file( AutoSplitter._path .. "loc/english.json")
+		loc:load_localization_file( AutoSplitter._path .. "lua/loc/english.json")
 	end)
 
 	Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_AutoSplitter", function( menu_manager )
@@ -44,6 +44,6 @@ if RequiredScript == "lib/managers/menumanager" then
 		end
 
 		AutoSplitter:LoadSettings()
-		MenuHelper:LoadFromJsonFile( AutoSplitter._path .. "menu.json", AutoSplitter, AutoSplitter._data )
+		MenuHelper:LoadFromJsonFile( AutoSplitter._path .. "lua/menu.json", AutoSplitter, AutoSplitter._data )
 	end )
 end

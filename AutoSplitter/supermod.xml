@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<mod>
+    <hooks script_path="lua/">
+        <pre hook_id="core/lib/utils/coreapp" :script_path="autosplitter.lua"/>
+        <post hook_id="lib/managers/menumanager" :script_path="menu.lua"/>
+        <group :script_path="split_hooks.lua">
+            <post hook_id="lib/states/victorystate"/>
+            <post hook_id="lib/states/gameoverstate"/>
+            <post hook_id="lib/states/menumainstate"/>
+            <post hook_id="lib/states/ingamewaitingforplayers"/>
+            <post hook_id="lib/managers/jobmanager"/>
+            <post hook_id="lib/setups/setup"/>
+        </group>
+    </hooks>
+</mod>
