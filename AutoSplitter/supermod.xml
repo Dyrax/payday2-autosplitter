@@ -12,4 +12,5 @@
             <post hook_id="lib/setups/setup"/>
         </group>
     </hooks>
+	<native_module platform="mswindows" filename="LiveSplitConnection.dll" />
 </mod>

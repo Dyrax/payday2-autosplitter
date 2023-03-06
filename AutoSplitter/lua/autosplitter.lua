@@ -27,6 +27,10 @@ if not _G.AutoSplitter then
 	AutoSplitter.WEAK_UNPAUSE = 4
 	AutoSplitter._isPaused = false
 	AutoSplitter._isWeakPaused = false
+
+	-- The connection to LiveSplit's named pipe is done in a native plugin. Lua has problems handling a _duplex_ named pipe,
+	-- moreover this way it was possible to implement a timeout when waiting for a result which would otherwise freeze the whole game indefinetly.
+	_, AutoSplitter.native_lib = blt.load_native(ModPath .. "LiveSplitConnection.dll")
 end
 
 function AutoSplitter:SaveSettings()
@@ -62,24 +66,19 @@ function AutoSplitter:LoadSettings()
 	self:setDefaultValue("action_waiting_for_players", self._actions.None)
 end
 
-function AutoSplitter:GetPipe()
-	-- reusing the handle might be faster but leads to problems when restarting livesplit
-	return io.open("//./pipe/LiveSplit", 'a+')
+function AutoSplitter:SendCmd(cmd)
+	if cmd then
+		assert(self.native_lib.send_command(cmd))
+	end
 end
 
-function AutoSplitter:SendCmd(pipe, cmd)
-	pipe:write(cmd, "\r\n")
-	pipe:flush()
+function AutoSplitter:SendCmdWithResult(cmd)
+	if cmd then
+		return assert(self.native_lib.send_command_and_get_result(cmd))
+	end
 end
 
-function AutoSplitter:GetCmdResult(pipe)
-	local res = pipe:read("*line")
-	pipe:seek("end") -- skip any unconsumed chars
-	return res
-end
-
-function AutoSplitter:GetCmdTimeResult(pipe)
-	local str = self:GetCmdResult(pipe)
+function AutoSplitter:TimeStringToSeconds(str)
 	local hours, minutes, seconds = str:match("([^:]+):([^:]+):([^:]+)") -- best regex ever
 	if not hours then
 		minutes, seconds = str:match("([^:]+):([^:]+)")
@@ -88,35 +87,30 @@ function AutoSplitter:GetCmdTimeResult(pipe)
 	return tonumber(seconds) + tonumber(minutes or 0) * 60 + tonumber(hours or 0) * 3600
 end
 
-function AutoSplitter:SendIGT(pipe, igt)
-	if igt and pipe then
+function AutoSplitter:SendIGT(igt)
+	if igt then
 		-- might return realtime, no way to check unfortunately
-		self:SendCmd(pipe, "getcurrentgametime") 
-		prev_igt = self:GetCmdTimeResult(pipe)
+		prev_igt = self:TimeStringToSeconds(self:SendCmdWithResult("getcurrentgametime"))
 		igt = igt + prev_igt
 		igt = tostring(igt)
-		self:SendCmd(pipe, "setgametime " .. igt)
+		self:SendCmd("setgametime " .. igt)
 	end
 end
 
 function AutoSplitter:DoActionAndUpdateTime(igt, action, pauseHeistOnly, pauseLoadRemoving)
-	local pipe = self:GetPipe()
-	if pipe then
-		pipe:seek("end") -- make sure no leftover chars are in the pipe
-
-		self:SendCmd(pipe, "getsplitindex")
+	if self.native_lib.connect() then
 		local isStartAction = action == self._actions.Start or action == self._actions.StartOrSplit
 		local currentIndex = nil
 		if isStartAction or self:UsesHeistTime() then
 			-- only request current index if necessary
-			currentIndex = tonumber(self:GetCmdResult(pipe))
+			currentIndex = tonumber(self:SendCmdWithResult("getsplitindex"))
 		end
 		local isStart = isStartAction and currentIndex < 0
 
 		if self:UsesHeistTime() then
-			self:SendCmd(pipe, "alwayspausegametime")
+			self:SendCmd("alwayspausegametime")
 			if currentIndex >= 0 and igt then
-				self:SendIGT(pipe, igt)
+				self:SendIGT(igt)
 			end
 		end
 
@@ -127,31 +121,30 @@ function AutoSplitter:DoActionAndUpdateTime(igt, action, pauseHeistOnly, pauseLo
 			pauseAction = pauseLoadRemoving or (isStart and self.UNPAUSE) -- default unpaused at start
 		end
 		if pauseAction == self.PAUSE then
-			self:SendCmd(pipe, "pausegametime")
+			self:SendCmd("pausegametime")
 			self._isPaused = true
 			self._isWeakPaused = false
 		elseif pauseAction == self.UNPAUSE then
-			self:SendCmd(pipe, "unpausegametime")
+			self:SendCmd("unpausegametime")
 			self._isPaused = false
 			self._isWeakPaused = false
 		elseif pauseAction == self.WEAK_PAUSE then
-			self:SendCmd(pipe, "pausegametime")
+			self:SendCmd("pausegametime")
 			self._isWeakPaused = self._isWeakPaused or not self._isPaused
 			self._isPaused = true
 		elseif pauseAction == self.WEAK_UNPAUSE and self._isWeakPaused then
-			self:SendCmd(pipe, "unpausegametime")
+			self:SendCmd("unpausegametime")
 			self._isPaused = false
 			self._isWeakPaused = false
 		end
 
 		if action and self._action_cmds[action] then
-			self:SendCmd(pipe, self._action_cmds[action])
+			self:SendCmd(self._action_cmds[action])
 		end
 		if isStart and self:UsesHeistTime() then
 			-- set game time to zero when starting
-			self:SendIGT(pipe, 0)
+			self:SendIGT(0)
 		end
-		pipe:close()
 	end
 end
 
