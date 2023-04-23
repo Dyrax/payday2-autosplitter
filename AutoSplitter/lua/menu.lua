@@ -5,6 +5,8 @@ if RequiredScript == "lib/managers/menumanager" then
 			local name = item._parameters.name
 			if name == "autosplitter_igt_on_restarts" or name == "autosplitter_round_igt" then
 				item:set_enabled(AutoSplitter._data.game_time_mode == AutoSplitter._game_time_modes.HeistTime)
+			elseif name == "autosplitter_do_action_each_day" then
+				item:set_enabled(AutoSplitter._data.action_heist_completion ~= AutoSplitter._actions.None)
 			end
 		end
 	end
@@ -36,6 +38,11 @@ if RequiredScript == "lib/managers/menumanager" then
 		
 		MenuCallbackHandler.callback_autosplitter_action_heist_completion = function(self, item)
 			AutoSplitter._data.action_heist_completion = item:value()
+			AutoSplitter:SaveSettings()
+			disable_items()
+		end
+		MenuCallbackHandler.callback_autosplitter_do_action_each_day = function(self, item)
+			AutoSplitter._data.do_action_each_day = (item:value() == "on" and true or false)
 			AutoSplitter:SaveSettings()
 		end
 		MenuCallbackHandler.callback_autosplitter_action_menu = function(self, item)

@@ -19,6 +19,8 @@
 	
 	"autosplitter_action_heist_completion" : "On heist completion",
 	"autosplitter_action_heist_completion_desc" : "Action on succesfull heist completion",
+	"autosplitter_do_action_each_day": "After each day",
+	"autosplitter_do_action_each_day_desc": "Do action after each day completion for multi day heists",
 	"autosplitter_action_menu" : "On main menu",
 	"autosplitter_action_menu_desc" : "Action when entering main menu state, i.e. the state before a heist is startet",
 	"autosplitter_action_heist_start" : "On heist start",

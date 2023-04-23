@@ -19,7 +19,7 @@ if RequiredScript == "lib/states/victorystate" then
 		local action = nil
 		
 		-- only split on job finish not day, but otherwise still update IGT 
-		if isLastDay then
+		if isLastDay or AutoSplitter._data.do_action_each_day then
 			action = AutoSplitter._data.action_heist_completion
 		end
 		AutoSplitter:DoActionAndUpdateTime(igt, action, AutoSplitter.PAUSE, nil)

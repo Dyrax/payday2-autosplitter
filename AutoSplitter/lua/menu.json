@@ -65,6 +65,18 @@
 			"value" : "action_heist_completion",
 		},
 		{
+			"type" : "toggle",
+			"id" : "autosplitter_do_action_each_day",
+			"title" : "autosplitter_do_action_each_day",
+			"description" : "autosplitter_do_action_each_day_desc",
+			"callback" : "callback_autosplitter_do_action_each_day",
+			"value" : "do_action_each_day",
+		},
+		{
+			"type" : "divider",
+			"size" : 12,
+		},
+		{
 			"type" : "multiple_choice",
 			"id" : "autosplitter_action_menu",
 			"title" : "autosplitter_action_menu",
