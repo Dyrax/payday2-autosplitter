@@ -1,3 +1,19 @@
+-- The native library is copied to a temporary file
+-- This allows superblt to delete the mod directory during an update
+function autosplitter_load_native_library()
+	local DLL_VERSION = "1.0"
+	local tmpfile_path = os.getenv("TEMP") .. "/paydayAutosplitter_" .. DLL_VERSION
+	local tmpfile = io.open(tmpfile_path, "rb")
+	if tmpfile == nil then
+		tmpfile = assert(io.open(tmpfile_path, "w+b"))
+		local dllfile = io.open(ModPath .. "LiveSplitConnection.dll", "rb")
+		tmpfile:write(dllfile:read("*a"))
+		dllfile:close()
+	end
+	_, AutoSplitter.native_lib = blt.load_native(tmpfile_path)
+	tmpfile:close()
+end
+
 if not _G.AutoSplitter then
 	_G.AutoSplitter = _G.AutoSplitter or {}
 	AutoSplitter._path = ModPath
@@ -30,7 +46,7 @@ if not _G.AutoSplitter then
 
 	-- The connection to LiveSplit's named pipe is done in a native plugin. Lua has problems handling a _duplex_ named pipe,
 	-- moreover this way it was possible to implement a timeout when waiting for a result which would otherwise freeze the whole game indefinetly.
-	_, AutoSplitter.native_lib = blt.load_native(ModPath .. "LiveSplitConnection.dll")
+	autosplitter_load_native_library()
 end
 
 function AutoSplitter:SaveSettings()
